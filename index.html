@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tienda Online Biu</title>
+  <link rel="stylesheet" href="css/estilos.css" />
+</head>
+<body>
+
+  <header id="header"></header>
+
+  <main>
+    <section class="hero-banner"></section>
+
+    <section class="productos-destacados">
+      <h2>Nuestros Productos</h2>
+      <div class="filtros-categoria"></div>
+      <div id="grid-productos" class="galeria"></div>
+    </section>
+
+    <section class="categorias-visuales">
+  <h2>Explora Nuestras Categorías</h2>
+  <div class="grid-categorias">
+    
+    <a href="accesorios.html" class="categoria-item">
+      <img src="assets/img/cat-accesorios.jpg" alt="Accesorios">
+      <div class="texto-categoria">
+        <h3>Accesorios</h3>
+      </div>
+    </a>
+
+    <a href="#" class="categoria-item" data-categoria="pielCabello">
+      <img src="assets/img/cat-cuidado.jpg" alt="Cuidado de la piel y el cabello">
+      <div class="texto-categoria">
+        <h3>Cuidado de Piel y Cabello</h3>
+      </div>
+    </a>
+
+    <a href="#" class="categoria-item categoria-item-grande" data-categoria="rostro">
+      <img src="assets/img/cat-maquillaje.jpg" alt="Maquillaje">
+      <div class="texto-categoria">
+        <h3>Maquillaje</h3>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+    <section class="seccion-testimonios">
+      <h2>Lo que dicen nuestras clientas</h2>
+      <div class="carrusel-container">
+        <button class="carrusel-arrow prev" id="prev-testimonio">‹</button>
+        <div class="carrusel-view">
+          <div class="carrusel-track" id="track-testimonios"></div>
+        </div>
+        <button class="carrusel-arrow next" id="next-testimonio">›</button>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer"></footer>
+
+  <div class="lightbox-overlay" id="lightbox-overlay">
+    <img src="" class="lightbox-image" id="lightbox-image" alt="Testimonio ampliado">
+  </div>
+
+  <script type="module" src="js/script.js"></script>
+
+</body>
+</html>

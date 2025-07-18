@@ -48,30 +48,72 @@ const testimonios = [
 ];
 
 const carrito = new VanillaCart();
+const productosPorCarga = 6;
+let productosMostrados = productosPorCarga;
+let productosActuales = Object.values(productos).flat();
 
 function mostrarProductos(filtro) {
-  const grid = document.getElementById("grid-productos");
-  if (!grid) return;
-  grid.innerHTML = ""; 
-  const todosLosProductos = Object.values(productos).flat();
-  const productosAMostrar = todosLosProductos.filter(p => {
-    if (filtro === 'todos') return true;
-    return Object.keys(productos).find(cat => productos[cat].includes(p)) === filtro;
-  });
-  productosAMostrar.forEach(p => {
-    grid.innerHTML += `
-      <div class="tarjeta">
-        <img src="assets/img/${p.imagen}" alt="${p.nombre}">
-        <h4>${p.nombre}</h4>
-        <p>${p.descripcion}</p>
-        <p><strong>Precio:</strong> $${p.precio.toLocaleString()}</p>
-        <button class="add-to-cart"
-          data-name="${p.nombre}" data-price="${p.precio}" data-img="${p.imagen}" data-desc="${p.descripcion}">
-          Agregar 🛒
-        </button>
-      </div>`;
-  });
+    const grid = document.getElementById("grid-productos");
+    if (!grid) return;
+    grid.innerHTML = ""; // Limpiamos la cuadrícula para el nuevo filtro
+
+    // Filtramos los productos según la categoría seleccionada
+    let productosFiltrados;
+    if (filtro === 'todos') {
+        productosFiltrados = Object.values(productos).flat();
+    } else {
+        productosFiltrados = productos[filtro] || [];
+    }
+    productosActuales = productosFiltrados; // Actualizamos la lista actual
+
+    // Mostramos solo los primeros X productos
+    dibujarProductos(productosFiltrados.slice(0, productosPorCarga));
+    
+    // Y actualizamos el botón "Ver más"
+    gestionarBotonVerMas();
 }
+
+function dibujarProductos(lista) {
+    const grid = document.getElementById("grid-productos");
+    if (!grid) return;
+
+    lista.forEach(p => {
+        grid.innerHTML += `
+          <div class="tarjeta">
+            <img src="assets/img/${p.imagen}" alt="${p.nombre}">
+            <h4>${p.nombre}</h4>
+            <p>${p.descripcion}</p>
+            <p><strong>Precio:</strong> $${p.precio.toLocaleString()}</p>
+            <button class="add-to-cart"
+              data-name="${p.nombre}" data-price="${p.precio}" data-img="${p.imagen}" data-desc="${p.descripcion}">
+              Agregar 🛒
+            </button>
+          </div>`;
+    });
+}
+
+function gestionarBotonVerMas() {
+    const btn = document.getElementById("btn-ver-mas");
+    if (!btn) return;
+    
+    // Si la cantidad de productos actuales es menor o igual a los mostrados, ocultamos el botón
+    if (productosActuales.length <= productosMostrados) {
+        btn.style.display = 'none';
+    } else {
+        btn.style.display = 'block';
+    }
+}
+
+function cargarMasProductos() {
+    const grid = document.getElementById("grid-productos");
+    if (!grid) return;
+    
+    const siguientesProductos = productosActuales.slice(productosMostrados, productosMostrados + productosPorCarga);
+    dibujarProductos(siguientesProductos);
+    productosMostrados += productosPorCarga;
+    gestionarBotonVerMas();
+}
+
 
 function crearFiltros() {
   const cont = document.querySelector(".filtros-categoria");
@@ -86,11 +128,13 @@ function crearFiltros() {
       cont.querySelectorAll('.filtro-btn').forEach(btn => btn.classList.remove('active'));
       e.target.classList.add('active');
       const filtro = e.target.dataset.filtro;
+      productosMostrados = productosPorCarga; // Reiniciamos el contador de productos
       mostrarProductos(filtro);
     }
   });
 }
 
+// El resto de tus funciones
 function activarNavPrincipal() {
   const nav = document.querySelector('.main-nav');
   if (!nav) return;
@@ -105,6 +149,7 @@ function activarNavPrincipal() {
           btn.classList.toggle('active', btn.dataset.filtro === categoria);
         });
       }
+      productosMostrados = productosPorCarga;
       mostrarProductos(categoria);
       const seccionProductos = document.querySelector('.productos-destacados');
       if (seccionProductos) {
@@ -145,6 +190,8 @@ function activarBusqueda() {
     if (filtros) {
       filtros.querySelectorAll('.filtro-btn').forEach(btn => btn.classList.remove('active'));
     }
+    const botonCarga = document.getElementById("btn-ver-mas");
+    if(botonCarga) botonCarga.style.display = 'none';
   };
   searchButton.addEventListener('click', buscar);
   searchInput.addEventListener('keypress', e => {
@@ -172,41 +219,40 @@ function activarCarruselYZoom() {
     const lightboxImage = document.getElementById('lightbox-image');
 
     if (track && prevBtn && nextBtn) {
-        const slides = track.querySelectorAll('.slide-testimonio');
-        if (slides.length > 0) {
-            const slideCount = slides.length;
-            const slidesVisible = 3;
-            const maxSteps = slideCount <= slidesVisible ? 0 : slideCount - slidesVisible;
-            let currentIndex = 0;
-            function updateCarousel() {
-                const slideWidth = slides[0].offsetWidth;
-                track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-            }
-            nextBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex < maxSteps) ? currentIndex + 1 : 0;
-                updateCarousel();
-            });
-            prevBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex > 0) ? currentIndex - 1 : maxSteps;
-                updateCarousel();
-            });
+      const slides = track.querySelectorAll('.slide-testimonio');
+      if (slides.length > 0) {
+        const slideCount = slides.length;
+        const slidesVisible = 3;
+        const maxSteps = slideCount <= slidesVisible ? 0 : slideCount - slidesVisible;
+        let currentIndex = 0;
+        function updateCarousel() {
+          const slideWidth = slides[0].offsetWidth;
+          track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
         }
+        nextBtn.addEventListener('click', () => {
+          currentIndex = (currentIndex < maxSteps) ? currentIndex + 1 : 0;
+          updateCarousel();
+        });
+        prevBtn.addEventListener('click', () => {
+          currentIndex = (currentIndex > 0) ? currentIndex - 1 : maxSteps;
+          updateCarousel();
+        });
+      }
     }
 
     if (track && lightboxOverlay && lightboxImage) {
-        track.addEventListener('click', e => {
-            if (e.target.tagName === 'IMG' && e.target.closest('.slide-testimonio')) {
-                lightboxImage.src = e.target.src;
-                lightboxOverlay.classList.add('active');
-            }
-        });
-        lightboxOverlay.addEventListener('click', () => {
-            lightboxOverlay.classList.remove('active');
-        });
+      track.addEventListener('click', e => {
+        if (e.target.tagName === 'IMG' && e.target.closest('.slide-testimonio')) {
+          lightboxImage.src = e.target.src;
+          lightboxOverlay.classList.add('active');
+        }
+      });
+      lightboxOverlay.addEventListener('click', () => {
+        lightboxOverlay.classList.remove('active');
+      });
     }
 }
 
-// ESTA ES LA NUEVA FUNCIÓN, AHORA SEPARADA Y EN SU LUGAR
 function activarCategoriasVisuales() {
   const grid = document.querySelector('.grid-categorias');
   if (!grid) return;
@@ -222,6 +268,7 @@ function activarCategoriasVisuales() {
         btn.classList.toggle('active', btn.dataset.filtro === categoria);
       });
 
+      productosMostrados = productosPorCarga;
       mostrarProductos(categoria);
 
       document.querySelector('.productos-destacados')?.scrollIntoView({ behavior: 'smooth' });
@@ -265,6 +312,12 @@ document.addEventListener("click", e => {
 document.addEventListener("DOMContentLoaded", () => {
   cargarComponentes();
   crearFiltros();
+  
+  // Asignamos el evento al botón de "Ver más"
+  const btnVerMas = document.getElementById("btn-ver-mas");
+  if (btnVerMas) {
+      btnVerMas.addEventListener('click', cargarMasProductos);
+  }
 
   const parametrosURL = new URLSearchParams(window.location.search);
   const categoriaURL = parametrosURL.get('categoria');

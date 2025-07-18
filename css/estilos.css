@@ -325,37 +325,97 @@ footer {
 
 /* --- Responsive --- */
 @media screen and (max-width: 768px) {
-  .header-top-bar {
-    flex-direction: column;
-    gap: 15px;
-  }
+    /* -- Estilos del Header -- */
+    .header-top-bar {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .search-container {
+        width: 90%;
+    }
+    .main-nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .main-nav ul {
+        flex-direction: column;
+        gap: 8px;
+    }
 
-  .search-container {
-    width: 90%;
-  }
-  
-  .main-nav ul {
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
-  }
+    /* -- Estilos de la Paginación de Productos -- */
+    .contenedor-carga-mas {
+        text-align: center;
+        margin-top: 20px;
+    }
 
-  .tarjeta {
-    width: 45%;
-  }
+    /* -- Estilos de los Filtros y Tarjetas -- */
+    .filtros-categoria {
+        overflow-x: auto; /* Permite el scroll horizontal */
+        white-space: nowrap; /* Evita que los botones se salten de línea */
+        justify-content: flex-start; /* Alinea los botones al inicio */
+        padding-bottom: 10px;
+    }
+    .filtro-btn {
+        flex: 0 0 auto; /* No se encogen */
+        padding: 5px 10px;
+    }
+    .galeria {
+        gap: 15px;
+        padding: 0 5%;
+    }
+    .tarjeta {
+        width: 100%; /* Las tarjetas ocupan todo el ancho */
+        max-width: none;
+        padding: 15px;
+    }
 
-  .grid-categorias {
-    /* En móvil, hacemos que todo sea una sola columna */
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-  }
+    /* -- Estilos de las Categorías Visuales -- */
+    .grid-categorias {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+    .categoria-item-grande, .categoria-item {
+        grid-column: auto;
+        grid-row: auto;
+        aspect-ratio: 16 / 9; /* Le da una forma panorámica a todas */
+    }
 
-  .categoria-item-grande, .categoria-item {
-    /* Reseteamos los valores para que ocupen su espacio normal */
-    grid-column: auto;
-    grid-row: auto;
-    aspect-ratio: 16 / 9; /* Le damos una forma panorámica en móvil */
-  }
+    /* -- Estilos del Footer -- */
+    .footer-columns {
+        flex-direction: column;
+        gap: 30px;
+    }
+    .footer-column {
+        min-width: unset;
+    }
+    .newsletter-form {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .newsletter-form input {
+        border-radius: 5px;
+    }
+    .newsletter-form button {
+        border-radius: 5px;
+    }
+
+    /* -- Estilos de la página del carrito -- */
+    .carrito-layout {
+        flex-direction: column;
+    }
+    .items-carrito, .resumen-carrito {
+        min-width: unset;
+        width: 100%;
+    }
+
+    /* -- Estilos del Carrusel -- */
+    .carrusel-container {
+        padding: 0 20px;
+    }
+    .slide-testimonio {
+        flex: 0 0 100%; /* Mostrar solo 1 slide por vez */
+    }
 }
 /* --- ESTILOS PÁGINA CARRITO --- */
 

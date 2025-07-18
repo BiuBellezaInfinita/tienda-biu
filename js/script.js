@@ -57,6 +57,9 @@ function mostrarProductos(filtro) {
     if (!grid) return;
     grid.innerHTML = ""; // Limpiamos la cuadrícula para el nuevo filtro
 
+    // Reiniciamos el contador de productos
+    productosMostrados = productosPorCarga;
+
     // Filtramos los productos según la categoría seleccionada
     let productosFiltrados;
     if (filtro === 'todos') {
